@@ -4,12 +4,10 @@ from std_msgs.msg import String
 from geometry_msgs.msgs import Twist 
 import RPi.GPIO as GPIO          
 from time import sleep
-
 in1 = 24
 in2 = 23
 in3 = 22
 in4 = 27
-
 en1 = 25
 en2 =4
 temp1=1
@@ -35,36 +33,29 @@ def callback(data):
     lin = data.linear
     ang = data.angular
     # just considering the sign
-
     if(lin):
         forward()
     else: 
         backward()
-
     #if(ang):
         #move clockwise
     #else: 
         #move anti clockwise  
 
-
 def forward():
-   
-        GPIO.output(in1,GPIO.HIGH)
-        GPIO.output(in2,GPIO.LOW)
-        GPIO.output(in3,GPIO.HIGH)
-        GPIO.output(in4,GPIO.LOW)
-        print("forward")
-    
-    
-    
-    
-    
+    GPIO.output(in1,GPIO.HIGH)
+    GPIO.output(in2,GPIO.LOW)
+    GPIO.output(in3,GPIO.HIGH)
+    GPIO.output(in4,GPIO.LOW)
+    print("forward")
+
 def backward ():
-         GPIO.output(in1,GPIO.LOW)
-         GPIO.output(in2,GPIO.HIGH)
-         GPIO.output(in3,GPIO.LOW)
-         GPIO.output(in4,GPIO.HIGH)
-         print("backward")
+    GPIO.output(in1,GPIO.LOW)
+    GPIO.output(in2,GPIO.HIGH)
+    GPIO.output(in3,GPIO.LOW)
+    GPIO.output(in4,GPIO.HIGH)
+    print("backward")
+
 #def right():
     # how to move right 
 #def left():
