@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import rospy
 from std_msgs.msg import String
-from geometry_msgs.msgs import Twist 
+from geometry_msgs.msg import Twist 
 import RPi.GPIO as GPIO          
 from time import sleep
 in1 = 24
@@ -11,6 +11,8 @@ in4 = 27
 en1 = 25
 en2 =4
 temp1=1
+
+ 
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(in1,GPIO.OUT)
@@ -30,10 +32,12 @@ p2=GPIO.PWM(en2,1000)
 def callback(data):
     p1.start(25)
     p2.start(25)
-    lin = data.linear
-    ang = data.angular
+    lin = data.linear.x
+    ang = data.angular.z
+    print(lin)
+    
     # just considering the sign
-    if(lin):
+    if(lin>0):
         forward()
     else: 
         backward()
@@ -43,6 +47,8 @@ def callback(data):
         #move anti clockwise  
 
 def forward():
+    
+ 
     GPIO.output(in1,GPIO.HIGH)
     GPIO.output(in2,GPIO.LOW)
     GPIO.output(in3,GPIO.HIGH)
@@ -61,8 +67,6 @@ def backward ():
 #def left():
     # how to move left
 
-    print(lin)
-    print(ang)
 
 def listener():
     rospy.init_node('cmdvel_subscriber', anonymous=True)
