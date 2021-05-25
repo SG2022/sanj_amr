@@ -4,6 +4,8 @@ from std_msgs.msg import String
 from geometry_msgs.msg import Twist 
 import RPi.GPIO as GPIO          
 from time import sleep
+
+# defined pins
 in1 = 24
 in2 = 23
 in3 = 22
@@ -12,8 +14,7 @@ en1 = 25
 en2 =4
 temp1=1
 
- 
-
+# setup
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(in1,GPIO.OUT)
 GPIO.setup(in2,GPIO.OUT)
@@ -25,82 +26,73 @@ GPIO.output(in1,GPIO.LOW)
 GPIO.output(in2,GPIO.LOW)
 GPIO.output(in3,GPIO.LOW)
 GPIO.output(in4,GPIO.LOW)
+
+# setting up pwm 
 p1=GPIO.PWM(en1,1000)
 p2=GPIO.PWM(en2,1000)
+p1.start(25)
+p2.start(25)
 
+print("All the pin setup done")
 
 def callback(data):
-    p1.start(25)
-    p2.start(25)
-    lin = data.linear.x
-    ang = data.angular.z
-    print(lin)
-    print(ang)
-    
-    if lin>0:
+    x = data.linear.x
+    z = data.angular.z
+    if (x>0):
        forward()
-    elif lin<0: 
+    elif (x<0): 
        backward()
-    if(ang<0):
+    elif(z<0):
        right()
-    else: 
-       left()  
-    if (lin==0 and ang==0):
+    elif(z>0):
+       left()
+    elif (x==0 and z==0):
        stop()
 
 def forward():
-    
- 
-    GPIO.output(in1,GPIO.HIGH)
-    GPIO.output(in2,GPIO.LOW)
-    GPIO.output(in3,GPIO.HIGH)
-    GPIO.output(in4,GPIO.LOW)
     print("forward")
+    p1.ChangeDutyCycle(25)
+    p2.ChangeDutyCycle(25)
+    GPIO.output(in1,GPIO.HIGH) # anti
+    GPIO.output(in2,GPIO.LOW)
+    GPIO.output(in3,GPIO.HIGH) # clock
+    GPIO.output(in4,GPIO.LOW)
 
 def backward():
-
+    print("backward")
+    p1.ChangeDutyCycle(25)
+    p2.ChangeDutyCycle(25)
     GPIO.output(in1,GPIO.LOW)
     GPIO.output(in2,GPIO.HIGH)
     GPIO.output(in3,GPIO.LOW)
     GPIO.output(in4,GPIO.HIGH)
-    print("backward")
 
 def right():
-     
-     p1.ChangeDutyCycle(35)
-     p2.ChangeDutyCycle(15)
-     GPIO.output(in1,GPIO.HIGH)
-     GPIO.output(in2,GPIO.LOW)
-     GPIO.output(in3,GPIO.HIGH)
-     GPIO.output(in4,GPIO.LOW)
-     print("right turn")
+    print("right turn")
+    p1.ChangeDutyCycle(15)
+    p2.ChangeDutyCycle(15)
+    GPIO.output(in1,GPIO.HIGH)
+    GPIO.output(in2,GPIO.LOW)
+    GPIO.output(in3,GPIO.LOW)
+    GPIO.output(in4,GPIO.HIGH)
 
-
-
- 
 def left():
-     
-     p1.ChangeDutyCycle(15)
-     p2.ChangeDutyCycle(35)
-     GPIO.output(in1,GPIO.HIGH)
-     GPIO.output(in2,GPIO.LOW)
-     GPIO.output(in3,GPIO.HIGH)
-     GPIO.output(in4,GPIO.LOW)
-     print("left  turn")
+    print("left  turn")
+    p1.ChangeDutyCycle(15)
+    p2.ChangeDutyCycle(15)
+    GPIO.output(in1,GPIO.LOW)
+    GPIO.output(in2,GPIO.HIGH)
+    GPIO.output(in3,GPIO.HIGH)
+    GPIO.output(in4,GPIO.LOW)
 
 def stop():
-     
-        
-      GPIO.output(in1,GPIO.LOW)
-      GPIO.output(in2,GPIO.LOW)
-      GPIO.output(in3,GPIO.LOW)
-      GPIO.output(in4,GPIO.LOW)
-      
-      print("stop")  
+    print("stop")  
+    GPIO.output(in1,GPIO.LOW)
+    GPIO.output(in2,GPIO.LOW)
+    GPIO.output(in3,GPIO.LOW)
+    GPIO.output(in4,GPIO.LOW)
 
-
-
-def listener():
+def istener():
     rospy.init_node('cmdvel_subscriber', anonymous=True)
     rospy.Subscriber('cmd_vel', Twist, callback)
     rospy.spin()
