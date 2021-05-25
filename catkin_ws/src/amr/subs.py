@@ -92,7 +92,7 @@ def stop():
     GPIO.output(in3,GPIO.LOW)
     GPIO.output(in4,GPIO.LOW)
 
-def istener():
+def listener():
     rospy.init_node('cmdvel_subscriber', anonymous=True)
     rospy.Subscriber('cmd_vel', Twist, callback)
     rospy.spin()
