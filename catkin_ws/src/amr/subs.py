@@ -35,16 +35,18 @@ def callback(data):
     lin = data.linear.x
     ang = data.angular.z
     print(lin)
+    print(ang)
     
-    # just considering the sign
-    if(lin>0):
-        forward()
+    if lin>0:
+       forward()
+    elif lin<0: 
+       backward()
+    if(ang<0):
+       right()
     else: 
-        backward()
-    #if(ang):
-        #move clockwise
-    #else: 
-        #move anti clockwise  
+       left()  
+    if (lin==0 and ang==0):
+       stop()
 
 def forward():
     
@@ -55,17 +57,47 @@ def forward():
     GPIO.output(in4,GPIO.LOW)
     print("forward")
 
-def backward ():
+def backward():
+
     GPIO.output(in1,GPIO.LOW)
     GPIO.output(in2,GPIO.HIGH)
     GPIO.output(in3,GPIO.LOW)
     GPIO.output(in4,GPIO.HIGH)
     print("backward")
 
-#def right():
-    # how to move right 
-#def left():
-    # how to move left
+def right():
+     
+     p1.ChangeDutyCycle(35)
+     p2.ChangeDutyCycle(15)
+     GPIO.output(in1,GPIO.HIGH)
+     GPIO.output(in2,GPIO.LOW)
+     GPIO.output(in3,GPIO.HIGH)
+     GPIO.output(in4,GPIO.LOW)
+     print("right turn")
+
+
+
+ 
+def left():
+     
+     p1.ChangeDutyCycle(15)
+     p2.ChangeDutyCycle(35)
+     GPIO.output(in1,GPIO.HIGH)
+     GPIO.output(in2,GPIO.LOW)
+     GPIO.output(in3,GPIO.HIGH)
+     GPIO.output(in4,GPIO.LOW)
+     print("left  turn")
+
+def stop():
+     
+        
+      GPIO.output(in1,GPIO.LOW)
+      GPIO.output(in2,GPIO.LOW)
+      GPIO.output(in3,GPIO.LOW)
+      GPIO.output(in4,GPIO.LOW)
+      
+      print("stop")  
+
 
 
 def listener():
