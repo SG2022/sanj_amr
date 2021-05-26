@@ -30,8 +30,8 @@ GPIO.output(in4,GPIO.LOW)
 # setting up pwm 
 p1=GPIO.PWM(en1,1000)
 p2=GPIO.PWM(en2,1000)
-move_pwm = 40
-turn_pwm = 25
+move_pwm = 60
+turn_pwm = 45
 p1.start(move_pwm)
 p2.start(move_pwm)
 
