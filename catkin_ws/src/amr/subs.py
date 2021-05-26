@@ -30,8 +30,11 @@ GPIO.output(in4,GPIO.LOW)
 # setting up pwm 
 p1=GPIO.PWM(en1,1000)
 p2=GPIO.PWM(en2,1000)
-p1.start(25)
-p2.start(25)
+move_pwm = 40
+turn_pwm = 25
+p1.start(move_pwm)
+p2.start(move_pwm)
+
 
 print("All the pin setup done")
 
@@ -51,8 +54,8 @@ def callback(data):
 
 def forward():
     print("forward")
-    p1.ChangeDutyCycle(25)
-    p2.ChangeDutyCycle(25)
+    p1.ChangeDutyCycle(move_pwm)
+    p2.ChangeDutyCycle(move_pwm)
     GPIO.output(in1,GPIO.HIGH) # anti
     GPIO.output(in2,GPIO.LOW)
     GPIO.output(in3,GPIO.HIGH) # clock
@@ -60,8 +63,8 @@ def forward():
 
 def backward():
     print("backward")
-    p1.ChangeDutyCycle(25)
-    p2.ChangeDutyCycle(25)
+    p1.ChangeDutyCycle(move_pwm)
+    p2.ChangeDutyCycle(move_pwm)
     GPIO.output(in1,GPIO.LOW)
     GPIO.output(in2,GPIO.HIGH)
     GPIO.output(in3,GPIO.LOW)
@@ -69,8 +72,8 @@ def backward():
 
 def right():
     print("right turn")
-    p1.ChangeDutyCycle(15)
-    p2.ChangeDutyCycle(15)
+    p1.ChangeDutyCycle(turn_pwm)
+    p2.ChangeDutyCycle(turn_pwm)
     GPIO.output(in1,GPIO.HIGH)
     GPIO.output(in2,GPIO.LOW)
     GPIO.output(in3,GPIO.LOW)
@@ -78,8 +81,8 @@ def right():
 
 def left():
     print("left  turn")
-    p1.ChangeDutyCycle(15)
-    p2.ChangeDutyCycle(15)
+    p1.ChangeDutyCycle(turn_pwm)
+    p2.ChangeDutyCycle(turn_pwm)
     GPIO.output(in1,GPIO.LOW)
     GPIO.output(in2,GPIO.HIGH)
     GPIO.output(in3,GPIO.HIGH)
@@ -87,6 +90,8 @@ def left():
 
 def stop():
     print("stop")  
+    p1.ChangeDutyCycle(0)
+    p2.ChangeDutyCycle(0)
     GPIO.output(in1,GPIO.LOW)
     GPIO.output(in2,GPIO.LOW)
     GPIO.output(in3,GPIO.LOW)
