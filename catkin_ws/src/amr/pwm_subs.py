@@ -30,6 +30,9 @@ p1=GPIO.PWM(en1,1000)
 p2=GPIO.PWM(en2,1000)
 
 # initial setup for duty
+duty=0
+lin=0
+ang=0
 p1.start(25)
 p2.start(25)
 
@@ -38,7 +41,7 @@ def callback(data):
     ang = data.angular.z
 
     # converting into duty cycle from the teleop message by mulitplying it to 10
-    duty = lin * 10
+    duty =( lin * 10)
 
     # filter if duty cycle exceeds the limit
     if duty > 80:
