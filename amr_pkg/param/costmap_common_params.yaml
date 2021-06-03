@@ -1,0 +1,10 @@
+obstacle_range: 3.0
+raytrace_range: 3.5
+robot_radius: 0.60
+inflation_radius: 3.0
+cost_scaling_factor: 10.0
+map_type: costmap
+static_map: true
+track_unknown: true
+unknown_cost_value: 99999
+allow_unknown: false
